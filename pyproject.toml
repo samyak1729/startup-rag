@@ -1,0 +1,41 @@
+[project]
+name = "biotech-startup-rag"
+version = "0.1.0"
+description = "RAG system for biotech startup documents with hybrid search"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "streamlit>=1.29.0",
+    "qdrant-client[fastembed]==1.7.0",
+    "langchain-text-splitters==0.0.1",
+    "python-multipart==0.0.6",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "python-dotenv==1.0.0",
+    "rank-bm25==0.2.2",
+    "PyPDF2==3.0.1",
+    "python-docx==0.8.11",
+    "httpx==0.25.1",
+    "requests==2.31.0",
+    "numpy>=1.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "black==23.11.0",
+    "ruff==0.1.8",
+]
+
+[tool.uv]
+python-preference = "managed"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

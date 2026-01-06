@@ -1,0 +1,49 @@
+Meeting Minutes
+Title: Team Standup - Q1 2024 Gene Therapy Initiative
+Date: January 15, 2024
+Time: 10:00 AM - 11:00 AM
+Location: Conference Room B
+
+Attendees:
+- Dr. Sarah Chen (Lead Scientist)
+- Dr. Michael Rodriguez (Principal Investigator)
+- James Wong (Project Manager)
+- Lisa Park (Research Associate)
+- Robert Zhang (Data Analyst)
+
+Agenda:
+1. Q1 objectives review
+2. CRISPR targeting mechanism updates
+3. Regulatory timeline discussion
+4. Budget allocation for Q2
+5. Next steps and action items
+
+Minutes:
+
+DISCUSSION - Q1 Objectives:
+Dr. Chen presented the Q1 goals for the gene therapy initiative. We aim to complete Phase 2a safety studies by end of March. Current progress shows 85% completion on viral vector development. The team discussed challenges with off-target effects and proposed additional screening protocols.
+
+DISCUSSION - CRISPR Targeting Mechanism:
+Dr. Rodriguez shared updates on the targeting mechanism optimization. Recent experiments show improved specificity with modified sgRNA design. We achieved 94% on-target accuracy in vitro, exceeding our 90% target. However, in vivo validation is still pending. Next batch of animal studies begins next week.
+
+DISCUSSION - Regulatory Timeline:
+James Wong reviewed the regulatory pathway. IND application submission is planned for Q2 2024. FDA pre-meeting request submitted. Expected response in 6-8 weeks. We discussed the need for additional safety data to support our dosing rationale.
+
+DISCUSSION - Q2 Budget:
+Reviewed Q2 budget allocation. Proposed 15% increase for manufacturing scale-up. New equipment request for AAV production facility approved. Total Q2 budget: $2.3M (increase from $2.0M in Q1).
+
+ACTION ITEMS:
+1. Dr. Chen: Complete in vivo validation studies by Feb 28 - HIGH PRIORITY
+2. Lisa Park: Prepare comprehensive safety report for FDA submission - DUE: Feb 15
+3. Robert Zhang: Develop adverse event database and analysis protocol - DUE: Feb 1
+4. Dr. Rodriguez: Coordinate with manufacturing for scale-up plans - ONGOING
+5. James Wong: Schedule FDA pre-meeting call - DUE: Jan 22
+
+DECISIONS MADE:
+- Approved expansion of animal testing facility
+- Approved new hire request for Quality Assurance role
+- Approved purchase of next-gen sequencing equipment
+- Decided to pursue both IV and intrathecal delivery routes
+
+Next Meeting: Monday, January 22, 2024, 10:00 AM
+Follow-up Items: All action items to be reviewed at next meeting.
