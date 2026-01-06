@@ -3,6 +3,7 @@
 from langchain_text_splitters import CharacterTextSplitter
 from typing import Optional, Any
 from src.document_loader import DocumentMetadata
+from src.metadata_tagger import MetadataTagger
 
 # Wrapper class to mimic chonkie's chunk interface
 class ChunkObject:
@@ -34,12 +35,12 @@ class MeetingMinutesChunker(ChunkingStrategy):
             text_chunks = self.chunker.split_text(section_content)
             
             for i, chunk in enumerate(text_chunks):
-                chunk_metadata = {
-                    **metadata.to_dict(),
+                chunk_metadata = MetadataTagger.tag_chunk(chunk, metadata)
+                chunk_metadata.update({
                     'section': section_title,
                     'doc_type': 'meeting_minutes',
                     'chunk_type': 'structured_section',
-                }
+                })
                 
                 chunks.append({
                     'content': chunk,
@@ -96,12 +97,12 @@ class ProgressReportChunker(ChunkingStrategy):
             text_chunks = self.chunker.split_text(task_content)
             
             for chunk in text_chunks:
-                chunk_metadata = {
-                    **metadata.to_dict(),
+                chunk_metadata = MetadataTagger.tag_chunk(chunk, metadata)
+                chunk_metadata.update({
                     'task_type': task_type,
                     'doc_type': 'progress_report',
                     'chunk_type': 'task_based',
-                }
+                })
                 
                 chunks.append({
                     'content': chunk,
@@ -164,12 +165,12 @@ class ResearchPaperChunker(ChunkingStrategy):
             text_chunks = self.chunker.split_text(section_content)
             
             for chunk in text_chunks:
-                chunk_metadata = {
-                    **metadata.to_dict(),
+                chunk_metadata = MetadataTagger.tag_chunk(chunk, metadata)
+                chunk_metadata.update({
                     'section': section_name,
                     'doc_type': 'research_paper',
                     'chunk_type': 'semantic',
-                }
+                })
                 
                 chunks.append({
                     'content': chunk,
@@ -235,7 +236,7 @@ class IntelligentChunker:
                 {
                     'content': chunk,
                     'metadata': {
-                        **metadata.to_dict(),
+                        **MetadataTagger.tag_chunk(chunk, metadata),
                         'doc_type': 'general',
                         'chunk_type': 'default',
                     }

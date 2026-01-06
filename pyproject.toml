@@ -19,6 +19,7 @@ dependencies = [
     "httpx==0.25.1",
     "requests==2.31.0",
     "numpy>=1.26.0",
+    "sentence-transformers>=2.2.0",
 ]
 
 [project.optional-dependencies]

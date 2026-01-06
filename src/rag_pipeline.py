@@ -7,6 +7,7 @@ from datetime import datetime
 from src.document_loader import DocumentLoader
 from src.chunking import IntelligentChunker
 from src.vector_store import VectorStore
+from src.query_rewriter import QueryRewriter
 
 class RAGPipeline:
     """Orchestrates the entire RAG pipeline."""
@@ -114,18 +115,26 @@ class RAGPipeline:
         
         return results
     
-    def search(self, query: str, top_k: int = 5) -> list[dict]:
+    def search(self, query: str, top_k: int = 5, use_query_expansion: bool = False) -> list[dict]:
         """
         Search the indexed documents.
         
         Args:
             query: Search query
             top_k: Number of results to return
+            use_query_expansion: Whether to expand query with synonyms
         
         Returns:
             List of search results with content and metadata
         """
-        return self.vector_store.hybrid_search(query, top_k=top_k)
+        # Optionally expand query
+        if use_query_expansion:
+            rewritten = QueryRewriter.rewrite_query(query)
+            search_query = rewritten['expanded_query']
+        else:
+            search_query = query
+        
+        return self.vector_store.hybrid_search(search_query, top_k=top_k)
     
     def search_by_type(self, query: str, doc_type: str, top_k: int = 5) -> list[dict]:
         """
@@ -148,6 +157,79 @@ class RAGPipeline:
         ]
         
         return filtered[:top_k]
+    
+    def search_by_tags(self, query: str, semantic_tags: list[str], top_k: int = 5) -> list[dict]:
+        """
+        Search documents filtered by semantic tags.
+        
+        Args:
+            query: Search query
+            semantic_tags: List of semantic tags to filter by (e.g., ['key-finding', 'results'])
+            top_k: Number of results to return
+        
+        Returns:
+            Filtered search results
+        """
+        results = self.vector_store.hybrid_search(query, top_k=top_k*3)
+        
+        # Filter by semantic tags
+        filtered = [
+            r for r in results
+            if any(tag in r.get('metadata', {}).get('semantic_tags', []) for tag in semantic_tags)
+        ]
+        
+        return filtered[:top_k]
+    
+    def search_with_intent(self, query: str, query_intent: str, top_k: int = 5) -> list[dict]:
+        """
+        Search with automatic intent detection and filtering.
+        
+        Args:
+            query: Search query
+            query_intent: Type of query (research_finding, timeline, regulatory, methodology)
+            top_k: Number of results to return
+        
+        Returns:
+            Filtered search results
+        """
+        # Map query intent to document types and tags
+        intent_filters = {
+            'research_finding': {
+                'doc_types': ['research_paper'],
+                'tags': ['finding', 'key-finding', 'result', 'results', 'efficacy'],
+            },
+            'timeline': {
+                'doc_types': ['progress_report'],
+                'tags': ['timeline'],
+            },
+            'regulatory': {
+                'doc_types': ['general', 'progress_report'],
+                'tags': ['regulatory'],
+            },
+            'methodology': {
+                'doc_types': ['research_paper'],
+                'tags': ['methodology', 'method'],
+            },
+        }
+        
+        filters = intent_filters.get(query_intent, {})
+        results = self.vector_store.hybrid_search(query, top_k=top_k*3)
+        
+        # Apply doc type filter if specified
+        if filters.get('doc_types'):
+            results = [
+                r for r in results
+                if r.get('metadata', {}).get('doc_type') in filters['doc_types']
+            ]
+        
+        # Apply semantic tag filter if specified
+        if filters.get('tags'):
+            results = [
+                r for r in results
+                if any(tag in r.get('metadata', {}).get('semantic_tags', []) for tag in filters['tags'])
+            ]
+        
+        return results[:top_k]
     
     def get_stats(self) -> dict:
         """Get pipeline statistics."""
